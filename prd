@@ -1,0 +1,74 @@
+🧠 Product Requirements Document (PRD)
+Product Name
+ScrumPilot — Your AI Scrum Assistant for GitLab
+⸻
+1. Objective
+During daily stand-ups or sprint review meetings, a lot of time is spent updating JIRA/GitLab boards manually after verbal discussions. ScrumPilot automates this by:
+	•	Listening to team conversations during Scrum calls.
+	•	Understanding who’s working on which issue.
+	•	Updating issue statuses and adding comments automatically on GitLab.
+This saves time, increases accuracy, and ensures the issue board always reflects reality.
+⸻
+2. Problem Statement
+Teams often:
+	•	Forget to update issue statuses after daily calls.
+	•	Spend unnecessary time on manual board management.
+	•	Lose track of recent updates discussed verbally.
+	•	Lack automated, structured logs of progress mentioned in meetings.
+⸻
+3. Solution Overview
+ScrumPilot will:
+	•	Join the daily meeting (Google Meet, Zoom, or Microsoft Teams).
+	•	Use speech-to-text + speaker diarization to identify who said what.
+	•	Parse the spoken update (e.g., “I’ve completed the backend API for ticket #123”) using NLP.
+	•	Automatically:
+	•	Change the ticket status on GitLab (e.g., from “In Progress” → “Done”).
+	•	Add a summary comment under that issue (“Update from Aman: Completed backend API.”)
+	•	Optionally, tag the user who gave the update.
+⸻
+4. Target Users
+	•	Agile development teams using GitLab issue boards.
+	•	Scrum Masters and Product Managers.
+	•	Remote/distributed teams who rely on daily sync meetings.
+⸻
+5. User Stories
+#	As a…	I want to…	So that I can…
+1	Developer	Have my verbal updates automatically reflected on GitLab	Avoid manual board updates after the meeting
+2	Scrum Master	Get a summarized view of all progress mentioned during Scrum	Save time in note-taking and board management
+3	Product Manager	Track what was discussed vs. what’s actually done	Improve sprint tracking accuracy
+4	Team Member	See recent meeting notes attached to my tickets	Stay aligned without re-listening to the meeting
+⸻
+6. Key Features (MVP Scope)
+A. Meeting Listener (AI Agent)
+	•	Joins meetings via API (Zoom SDK or Google Meet transcript feed).
+	•	Records or transcribes live audio.
+	•	Performs speaker diarization (who said what).
+	•	Extracts sentences mentioning tickets (e.g., “I finished issue 231” or “I’m working on 198”).
+B. Update Parser (NLP Engine)
+	•	Uses keyword & pattern recognition to detect:
+	•	Issue IDs (#231, “issue 231”, “ticket 231”).
+	•	Action verbs like completed, working on, fixed, blocked, testing.
+	•	Maps each recognized action to a GitLab status transition or comment.
+C. GitLab Integrator
+	•	Authenticates via GitLab OAuth or PAT (Personal Access Token).
+	•	Fetches issue board for a specific project.
+	•	Updates ticket status or adds comments automatically.
+D. Scrum Summary Generator
+	•	After the meeting ends, generates a structured summary:
+7. Success Metrics
+Metric	Goal
+% of correctly mapped updates	≥ 80% accuracy
+Time saved in manual updates	≥ 30 mins per Scrum call
+User satisfaction	≥ 4.5/5 after MVP demo
+Adoption rate	100% of team uses agent in 3 days
+⸻
+8. Architecture Overview
+Pipeline Flow:
+	1.	Audio Input: Live meeting audio or transcript feed.
+	2.	Speech-to-Text: Whisper / Google Speech API.
+	3.	Speaker Diarization: Pyannote / AssemblyAI / AWS Transcribe.
+	4.	NLP Processor: Custom Python module using OpenAI API or Llama for parsing intent.
+	5.	GitLab Connector: Python GitLab SDK for updating issues.
+	6.	Output: Updated issue board + generated meeting summary.
+[Meeting Audio] → [Transcriber] → [Speaker + Text] → [NLP Extractor] 
+→ [GitLab Connector] → [Board Update + Comments + Summary
